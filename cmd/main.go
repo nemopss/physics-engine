@@ -6,23 +6,26 @@ import (
 )
 
 func main() {
-	// Создаем физическое тело (Body)
-	body := core.NewBody(
-		core.Vector{X: 0, Y: 0}, // Начальная позиция
-		core.Vector{X: 0, Y: 0}, // Начальная скорость
-		5.0,                     // Масса
+	// Создаём физический мир
+	world := core.NewWorld(
+		core.Vector{X: 0, Y: -9.8}, // Гравитация вниз
+		1.0,                        // Шаг времени (1 секунда)
 	)
 
-	// Применяем силу (гравитация)
-	gravity := core.Vector{X: 0, Y: -9.8}   // Ускорение свободного падения
-	body.ApplyForce(gravity.Mul(body.Mass)) // F = m * g
+	// Добавляем объекты в мир
+	body1 := core.NewBody(core.Vector{X: 0, Y: 20}, core.Vector{X: 0, Y: 0}, 10.0) // Объект на высоте 20
 
-	// Обновляем состояние объекта на 1 секунду
-	deltaTime := 1.0
-	body.Update(deltaTime)
+	world.AddBody(body1)
 
-	// Печатаем итоговую позицию и скорость
-	fmt.Println("Position after 1 second:", body.Position)
-	fmt.Println("Velocity after 1 second:", body.Velocity)
+	// Выводим начальное состояние
+	fmt.Println("Step 0:")
+	fmt.Println("Body 1 Position:", body1.Position, "Velocity:", body1.Velocity)
+
+	// Обновляем мир пошагово и выводим результат после каждого шага
+	for step := 1; step <= 4; step++ {
+		world.Update()
+		fmt.Printf("\nStep %d:\n", step)
+		fmt.Println("Body 1 Position:", body1.Position, "Velocity:", body1.Velocity)
+	}
 
 }
