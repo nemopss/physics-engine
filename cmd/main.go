@@ -6,16 +6,23 @@ import (
 )
 
 func main() {
-	// Создаем два вектора
-	v1 := core.Vector{X: 3, Y: 4}
-	v2 := core.Vector{X: 1, Y: 2}
+	// Создаем физическое тело (Body)
+	body := core.NewBody(
+		core.Vector{X: 0, Y: 0}, // Начальная позиция
+		core.Vector{X: 0, Y: 0}, // Начальная скорость
+		5.0,                     // Масса
+	)
 
-	// Пример операций
-	fmt.Println("Vector 1:", v1)
-	fmt.Println("Vector 2:", v2)
-	fmt.Println("Addition:", v1.Add(v2))
-	fmt.Println("Subtraction:", v1.Sub(v2))
-	fmt.Println("Length of Vector 1:", v1.Length())
-	fmt.Println("Normalized Vector 1:", v1.Normalize())
-	fmt.Println("Dot Product:", v1.Dot(v2))
+	// Применяем силу (гравитация)
+	gravity := core.Vector{X: 0, Y: -9.8}   // Ускорение свободного падения
+	body.ApplyForce(gravity.Mul(body.Mass)) // F = m * g
+
+	// Обновляем состояние объекта на 1 секунду
+	deltaTime := 1.0
+	body.Update(deltaTime)
+
+	// Печатаем итоговую позицию и скорость
+	fmt.Println("Position after 1 second:", body.Position)
+	fmt.Println("Velocity after 1 second:", body.Velocity)
+
 }
