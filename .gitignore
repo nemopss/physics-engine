@@ -1,0 +1,10 @@
+echo 'bin/
+*.exe
+*.log
+.env
+vendor/
+node_modules/
+coverage/
+' > .gitignore
+git init
+
